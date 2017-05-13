@@ -23,7 +23,6 @@ public class ShoppingListManager {
 
 
     private static ShoppingListManager sInstance;
-    private ArrayList<ShoppingItem> mShopList;
     private DBManager mDb;
 
     public static ShoppingListManager getInstance(Context mContext) {
@@ -36,33 +35,34 @@ public class ShoppingListManager {
 
     private ShoppingListManager(Context mContext) {
         mDb = DBManager.getInstance(mContext);
-        mShopList = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
+}
+
+    /**
+     *  Shopping Item List methods
+     *
+     */
+    public ArrayList<ShoppingItem> getShopList() {
+        return (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
     }
 
-    private ArrayList<ShoppingItem> getShopList() {
-        return mShopList;
-    }
-
-    private void addItem(ShoppingItem item) {
+    public void addShopListItem(ShoppingItem item) {
         mDb.insertProduct(item);
-        refreshList();
 
     }
 
-    private void updateItem(ShoppingItem item) {
+    public void updateShopListItem(ShoppingItem item) {
         mDb.updateProduct(item);
-        refreshList();
     }
 
-    private void deleteItem(ShoppingItem item) {
+    public void deleteShopListItem(ShoppingItem item) {
         mDb.deleteProduct(item);
-        refreshList();
     }
 
-    private float getTotalPrice() {
+    public float getTotalPrice() {
         float mTotalPrice = 0;
-        if (!mShopList.isEmpty()) {
-            for (ShoppingItem s : mShopList) {
+        ArrayList<ShoppingItem> list = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
+        if (!list.isEmpty()) {
+            for (ShoppingItem s : list) {
                 if (s.isChecked() && !s.getPrice().isEmpty()) {
                     mTotalPrice += Float.parseFloat(s.getPrice());
                 }
@@ -71,27 +71,31 @@ public class ShoppingListManager {
         return mTotalPrice;
     }
 
-    private void deleteList() {
-        for (ShoppingItem s : mShopList) {
+    public void deleteShopItemList() {
+        ArrayList<ShoppingItem> list = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
+        for (ShoppingItem s : list) {
             mDb.deleteProduct(s);
         }
-        refreshList();
     }
 
-    private void refreshList(){
-        mShopList = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
-    }
 
-    private ArrayList<ShoppingItem> sortList() {
-
+    public ArrayList<ShoppingItem> sortShopItemList() {
+        ArrayList<ShoppingItem> list = (ArrayList < ShoppingItem >) mDb.getAllShoppingItems();
         if (SORT_MODE == NO_ORDER ) {
-            mShopList = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
-        } else {
-            Collections.sort(mShopList, new ShopItemComparator());
+            return list;
         }
 
-        return mShopList;
+        Collections.sort(list, new ShopItemComparator());
+        return list;
     }
+
+    /**
+     *  Shopping History Item List methods
+     *
+     */
+
+
+
 
 }
 
