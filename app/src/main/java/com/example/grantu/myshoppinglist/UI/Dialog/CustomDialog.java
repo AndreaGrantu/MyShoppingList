@@ -260,7 +260,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                         String formattedDate = df.format(c.getTime());
                         s.setDate(formattedDate);
                         if(s.getContent().isEmpty()){
-                            hideKeyboard();
+                         //   hideKeyboard();
                             warningView.setVisibility(View.VISIBLE);
                         } else {
 
