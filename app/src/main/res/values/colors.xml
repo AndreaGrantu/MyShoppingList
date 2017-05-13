@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Main Color-->
+    <color name="colorPrimary">#4caf50</color>
+    <color name="colorPrimaryLight">#c8e6c9</color>
+    <color name="colorPrimaryDark">#1b5e20</color>
+    <!--Accent: text fields and cursors
+            Text selection
+            Progress bars
+            Selection controls, buttons, and sliders
+            Links -->
+
+    <color name="colorAccent">#2979ff</color>
+
+    <color name="colorTextPrimary">#000000</color>
+    <color name="colorTextSecondary">#e0e0e0</color>
+    <color name="colorTransparent">#800000</color>
+
+
+
+</resources>

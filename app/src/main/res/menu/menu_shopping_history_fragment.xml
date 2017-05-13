@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/action_delete_history_list"
+        app:showAsAction="ifRoom"
+        android:title="delete"
+        android:icon="@drawable/ic_delete_white_24dp" />
+
+
+</menu>

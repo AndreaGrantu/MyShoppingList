@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">MyShop</string>
+
+    <string name="euro_label">€</string>
+
+    <string name="title_section_shop_items">Shopping List</string>
+    <string name="title_section_shop_history">History</string>
+
+    <!-- menu -->
+    <string name="menu_unselect_all">Unselect All</string>
+    <string name="menu_delete_list">Delete List</string>
+    <string name="menu_add_item">Add Item</string>
+    <string name="menu_save_list">Save List</string>
+    <string name="menu_sort_list">Sort</string>
+
+
+    <!-- shop list section-->
+    <string name="shop_list_total_price_label">Total price:</string>
+    <string name="shop_list_empty">This is your shop list.\nPress the \'+\' menu button to add a new item in your list. You can also delete your list or save it when you end your shop.</string>
+
+
+    <!-- delete_shoppping_list_dialog -->
+    <string name="delete_shopping_list_dialog_title">Delete entire list?</string>
+    <string name="delete_shopping_list_dialog_content">If you agree all your items will be delete and they will be no more avaiable.</string>
+    <string name="delete_shopping_list_dialog_agree">AGREE</string>
+    <string name="delete_shopping_list_dialog_disagree">DISAGREE</string>
+    <string name="delete_shopping_item_alert_empty">Your list is empty, there\'s nothing to delete</string>
+    <!-- add_shopping_item_dialog -->
+    <string name="add_shopping_item_dialog_title">Add new item</string>
+    <string name="modify_shopping_item_dialog_title">Modify your item</string>
+
+    <string name="add_shopping_item_dialog_content">Insert the name of the new product you want to add in your list (price and abount can be fill later).</string>
+    <string name="add_shopping_item_dialog_name">Name*:</string>
+    <string name="add_shopping_item_dialog_amount">Amount (es: 4,55 gr):</string>
+    <string name="add_shopping_item_dialog_price">Price (currency = Euro):</string>
+    <string name="add_shopping_item_dialog_save">SAVE</string>
+    <string name="add_shopping_item_dialog_cancel">CANCEL</string>
+    <string name="add_shopping_item_name_empty">You must fill name field</string>
+    <string name="add_shopping_item_insert_error">There\'s a problem with database, please retry later</string>
+    <string name="add_shopping_item_insert_well_done">Your list has been saved, you can find it into the "History" tab</string>
+
+    <!-- saveshopping_item_dialog -->
+    <string name="save_shopping_item_dialog_title">Save shopping list</string>
+    <string name="save_shopping_item_dialog_content">You can now save your list (put the name and some notes, like the name of the supermarket or the day)</string>
+    <string name="save_shopping_item_dialog_name">Name*:</string>
+    <string name="save_shopping_item_dialog_notes">Notes:</string>
+    <string name="save_shopping_item_dialog_save">SAVE</string>
+    <string name="save_shopping_item_dialog_cancel">CANCEL</string>
+    <string name="save_shopping_item_alert_empty">Your list is empty, add at least one product</string>
+
+    <!-- delete_shopping_history_dialog -->
+    <string name="delete_shopping_history_dialog_title">Delete entire history list?</string>
+    <string name="delete_shopping_history_dialog_content">If you agree the history will be delete.</string>
+    <string name="delete_shopping_history_dialog_agree">AGREE</string>
+    <string name="delete_shopping_history_dialog_disagree">DISAGREE</string>
+    <string name="delete_shopping_history_dialog_empty">Your list is empty, there\'s nothing to delete</string>
+
+    <!-- history list section-->
+    <string name="history_list_empty">Here there\'s your history.\nYou can see your past lists shop and if you tap one of them you can see the detail.</string>
+
+    <!--dialog_history_list_details-->
+    <string name="dialog_history_list_details_back">BACK</string>
+    <string name="dialog_history_list_details_reuse">REUSE</string>
+    <string name="dialog_history_list_details_reuse_success">Now your shopping list has been filled with the elements of the past shop list</string>
+
+    <!-- dialog sort -->
+    <string name="dialog_sort_title">Sort your list</string>
+    <string name="dialog_sort_option_unselected">Unselected first</string>
+    <string name="dialog_sort_option_selected">Selected first</string>
+    <string name="dialog_sort_option_name">By name</string>
+    <string name="dialog_sort_option_price">By price</string>
+    <string name="dialog_sort_option_none">None</string>
+    <string name="dialog_sort_back">BACK</string>
+
+
+
+</resources>
