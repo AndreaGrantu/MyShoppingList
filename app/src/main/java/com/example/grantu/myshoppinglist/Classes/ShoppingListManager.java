@@ -42,7 +42,12 @@ public class ShoppingListManager {
      *
      */
     public ArrayList<ShoppingItem> getShopList() {
-        return (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
+        ArrayList<ShoppingItem> list = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
+        if (list == null) {
+            list = new ArrayList<ShoppingItem>();
+        }
+
+        return list;
     }
 
     public void addShopListItem(ShoppingItem item) {
@@ -87,6 +92,23 @@ public class ShoppingListManager {
 
         Collections.sort(list, new ShopItemComparator());
         return list;
+    }
+
+    public void unselectShopItemList(){
+        ArrayList<ShoppingItem> list = (ArrayList < ShoppingItem >) mDb.getAllShoppingItems();
+        for(ShoppingItem s : list){
+            if(s.isChecked()){
+                s.setIsChecked(false);
+                mDb.updateProduct(s);
+            }
+
+        }
+    }
+
+    public void insertShopItemList(ArrayList<ShoppingItem> list){
+        for(ShoppingItem sp : list){
+            mDb.insertProduct(sp);
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grantu.myshoppinglist.Classes.ShoppingItem;
-import com.example.grantu.myshoppinglist.DBManager;
+import com.example.grantu.myshoppinglist.Classes.ShoppingListManager;
 import com.example.grantu.myshoppinglist.R;
 import com.example.grantu.myshoppinglist.UI.Dialog.CustomDialog;
 import com.example.grantu.myshoppinglist.Utils.ShopHistoryParser;
@@ -46,9 +46,7 @@ public class ShoppingItemsFragment extends Fragment {
                 String s = intent.getStringExtra(REUSE_LIST);
                 if(s != null){
                     List<ShoppingItem> list = ShopHistoryParser.getInstance().parseStringToList(s);
-                    for(ShoppingItem sp : list){
-                        mDb.insertProduct(sp);
-                    }
+                    mSLManager.insertShopItemList((ArrayList<ShoppingItem>)list);
                     loadData();
                 }
             }
@@ -58,22 +56,13 @@ public class ShoppingItemsFragment extends Fragment {
     private static final String TAG = "ShoppingItemsFragment";
     public static final String REUSE_LIST="NEW_ELEMENT";
 
-    /* SORT MODE */
-    public static final int NO_ORDER = 0;
-    public static final int UNSELECT_ORDER = NO_ORDER+1;
-    public static final int SELECT_ORDER = UNSELECT_ORDER+1;
-    public static final int PRICE_ORDER = SELECT_ORDER+1;
-    public static final int NAME_ORDER = PRICE_ORDER+1;
-
-    public static int SORT_MODE = NO_ORDER;
 
     private Activity mActivity;
-    private DBManager mDb;
+    private ShoppingListManager mSLManager;
 
     private ListView mShoppingListView;
     private TextView mHeaderList;
     private ShoppingItemsReceiver receiver = new ShoppingItemsReceiver();
-    private List<ShoppingItem> mItems;
 
     private float mTotalPrice = 0;
 
@@ -90,22 +79,17 @@ public class ShoppingItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_shopping_items, container, false);
-        mDb = DBManager.getInstance(mActivity);
-        getViewReferences(v);
+        mSLManager = ShoppingListManager.getInstance(mActivity);
 
+        getViewReferences(v);
         loadData();
 
         return v;
     }
 
     private void loadData(){
-        mItems = mDb.getAllShoppingItems();
-        if(mItems != null){
-            mShoppingListView.setAdapter(new ShoppingListAdapter(mActivity, mItems));
-            setTotalPrice();
-        }
-
-
+        mShoppingListView.setAdapter(new ShoppingListAdapter(mActivity, mSLManager.getShopList()));
+     //   setTotalPrice();
     }
 
     private void getViewReferences(View v) {
@@ -177,6 +161,8 @@ public class ShoppingItemsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        ArrayList<ShoppingItem> mItems = mSLManager.getShopList();
+
         switch (item.getItemId()){
 
             case R.id.action_add_item:
@@ -229,20 +215,12 @@ public class ShoppingItemsFragment extends Fragment {
 
 
     private void unselectAllItems(){
-        for(ShoppingItem s : mItems){
-            if(s.isChecked()){
-                s.setIsChecked(false);
-                mDb.updateProduct(s);
-            }
-
-        }
+        mSLManager.unselectShopItemList();
         loadData();
     }
 
     public void deleteList(){
-        for(ShoppingItem s : mItems){
-            mDb.deleteProduct(s);
-        }
+        mSLManager.deleteShopItemList();
         loadData();
     }
 
@@ -251,7 +229,7 @@ public class ShoppingItemsFragment extends Fragment {
     }
 
     public List<ShoppingItem> getListItem(){
-        return this.mItems;
+        return mSLManager.getShopList();
     }
 
     private void updateTotalPrice(String price){
@@ -261,12 +239,11 @@ public class ShoppingItemsFragment extends Fragment {
 
     private void setTotalPrice(){
         mTotalPrice = 0;
-        for(ShoppingItem s: mItems){
+        for(ShoppingItem s: mSLManager.getShopList()){
             if(s.isChecked() && !s.getPrice().isEmpty()){
                 mTotalPrice += Float.parseFloat(s.getPrice());
             }
         }
-        mHeaderList.setText(mActivity.getString(R.string.shop_list_total_price_label) + " " + mTotalPrice + " "+mActivity.getString(R.string.euro_label));
 
     }
 
@@ -396,7 +373,7 @@ public class ShoppingItemsFragment extends Fragment {
                     if(item.isChecked()){
                         updateTotalPrice("-"+item.getPrice());
                     }
-                    mDb.deleteProduct(item);
+                    mSLManager.deleteShopListItem(item);
                     loadData();
                     break;
                 case R.id.item_checkbox:
@@ -412,7 +389,7 @@ public class ShoppingItemsFragment extends Fragment {
                             updateTotalPrice("-" + item.getPrice());
                         }
                     }
-                    mDb.updateProduct(item);
+                    mSLManager.updateShopListItem(item);
                     break;
 
             }

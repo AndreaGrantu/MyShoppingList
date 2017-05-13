@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.grantu.myshoppinglist.Classes.ShoppingHistoryItem;
 import com.example.grantu.myshoppinglist.Classes.ShoppingItem;
+import com.example.grantu.myshoppinglist.Classes.ShoppingListManager;
 import com.example.grantu.myshoppinglist.DBManager;
 import com.example.grantu.myshoppinglist.R;
 import com.example.grantu.myshoppinglist.UI.Fragments.HistoryListsFragment;
@@ -312,15 +313,15 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
                 int sort_id = i;
                 if(sort_id == R.id.unselected_radiobutton){
-                    ShoppingItemsFragment.SORT_MODE = ShoppingItemsFragment.UNSELECT_ORDER;
+                    ShoppingListManager.SORT_MODE = ShoppingListManager.UNSELECT_ORDER;
                 } else if(sort_id == R.id.selected_radiobutton){
-                    ShoppingItemsFragment.SORT_MODE = ShoppingItemsFragment.SELECT_ORDER;
+                    ShoppingListManager.SORT_MODE = ShoppingListManager.SELECT_ORDER;
                 } else if (sort_id == R.id.price_radiobutton){
-                    ShoppingItemsFragment.SORT_MODE = ShoppingItemsFragment.PRICE_ORDER;
+                    ShoppingListManager.SORT_MODE = ShoppingListManager.PRICE_ORDER;
                 } else if( sort_id == R.id.name_radiobutton){
-                    ShoppingItemsFragment.SORT_MODE = ShoppingItemsFragment.NAME_ORDER;
+                    ShoppingListManager.SORT_MODE = ShoppingListManager.NAME_ORDER;
                 } else if( sort_id == R.id.none_radiobutton){
-                    ShoppingItemsFragment.SORT_MODE = ShoppingItemsFragment.NO_ORDER;
+                    ShoppingListManager.SORT_MODE = ShoppingListManager.NO_ORDER;
                 }
 
                 //back button
