@@ -187,6 +187,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
             case SORT_LIST:
                 v = inflater.inflate(R.layout.dialog_sort_items,container,false);
                 radioGroup = (RadioGroup) v.findViewById(R.id.sort_radiogroup);
+                radioGroup.check(getIdViewToCheck());
                 radioGroup.setOnCheckedChangeListener(this);
                 negativeButton = (TextView)v.findViewById(R.id.negative_btn);
                 negativeButton.setOnClickListener(this);
@@ -260,7 +261,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                         String formattedDate = df.format(c.getTime());
                         s.setDate(formattedDate);
                         if(s.getContent().isEmpty()){
-                         //   hideKeyboard();
+                            hideKeyboard();
                             warningView.setVisibility(View.VISIBLE);
                         } else {
 
@@ -303,11 +304,29 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
     }
 
-    private void hideKeyboard(){
-        if(this.getView() != null){
-            InputMethodManager imm = (InputMethodManager)mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromInputMethod(getView().getWindowToken(),0);
+    private void hideKeyboard() {
+        if (this.getView() != null) {
+            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromInputMethod(getView().getWindowToken(), 0);
         }
+
+    }
+    private int getIdViewToCheck(){
+
+        switch (ShoppingListManager.SORT_MODE){
+            case ShoppingListManager.SELECT_ORDER:
+                return R.id.selected_radiobutton;
+            case ShoppingListManager.UNSELECT_ORDER:
+                return R.id.unselected_radiobutton;
+            case ShoppingListManager.NAME_ORDER:
+                return R.id.name_radiobutton;
+            case ShoppingListManager.NO_ORDER:
+                return R.id.none_radiobutton;
+            default:
+                return R.id.none_radiobutton;
+
+        }
+
     }
 
     @Override
@@ -322,8 +341,6 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                     ShoppingListManager.SORT_MODE = ShoppingListManager.UNSELECT_ORDER;
                 } else if(sort_id == R.id.selected_radiobutton){
                     ShoppingListManager.SORT_MODE = ShoppingListManager.SELECT_ORDER;
-                } else if (sort_id == R.id.price_radiobutton){
-                    ShoppingListManager.SORT_MODE = ShoppingListManager.PRICE_ORDER;
                 } else if( sort_id == R.id.name_radiobutton){
                     ShoppingListManager.SORT_MODE = ShoppingListManager.NAME_ORDER;
                 } else if( sort_id == R.id.none_radiobutton){

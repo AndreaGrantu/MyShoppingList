@@ -203,10 +203,7 @@ public class ShoppingItemsFragment extends Fragment {
     }
 
     public void orderList(){
-
-        //I do something
-
-
+        loadData();
     }
 
 
@@ -354,6 +351,7 @@ public class ShoppingItemsFragment extends Fragment {
                         background.setBackgroundResource(Color.TRANSPARENT);
                     }
                     mSLManager.updateShopListItem(item);
+                    loadData();
                     break;
 
             }

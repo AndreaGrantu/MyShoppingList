@@ -47,13 +47,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/dialog_sort_option_unselected"/>
 
-            <RadioButton
-                android:id="@+id/price_radiobutton"
-                android:layout_marginTop="18dp"
-                android:layout_width="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:layout_height="wrap_content"
-                android:text="@string/dialog_sort_option_price"/>
 
 
             <RadioButton

@@ -16,10 +16,9 @@ public class ShoppingListManager {
     public static final int NO_ORDER = 0;
     public static final int UNSELECT_ORDER = NO_ORDER + 1;
     public static final int SELECT_ORDER = UNSELECT_ORDER + 1;
-    public static final int PRICE_ORDER = SELECT_ORDER + 1;
-    public static final int NAME_ORDER = PRICE_ORDER + 1;
+    public static final int NAME_ORDER = SELECT_ORDER + 1;
 
-    public static int SORT_MODE = NO_ORDER;
+    public static int SORT_MODE;
 
 
     private static ShoppingListManager sInstance;
@@ -42,7 +41,7 @@ public class ShoppingListManager {
      *
      */
     public ArrayList<ShoppingItem> getShopList() {
-        ArrayList<ShoppingItem> list = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
+        ArrayList<ShoppingItem> list = sortShopItemList();
         if (list == null) {
             list = new ArrayList<ShoppingItem>();
         }
@@ -126,26 +125,24 @@ class ShopItemComparator implements Comparator<ShoppingItem>{
     public int compare(ShoppingItem t1, ShoppingItem t2) {
 
         switch(ShoppingListManager.SORT_MODE){
-            case ShoppingListManager.PRICE_ORDER:
-
 
             case ShoppingListManager.NAME_ORDER:
                 return t1.getName().compareTo(t2.getName());
 
             case ShoppingListManager.SELECT_ORDER:
                 if(t1.isChecked() && !t2.isChecked()){
-                    return 1;
-                } else if (!t1.isChecked() && t2.isChecked()){
                     return -1;
+                } else if (!t1.isChecked() && t2.isChecked()){
+                    return 1;
                 } else {
                     return 0;
                 }
 
             case ShoppingListManager.UNSELECT_ORDER:
                 if(t1.isChecked() && !t2.isChecked()){
-                    return -1;
-                } else if (!t1.isChecked() && t2.isChecked()){
                     return 1;
+                } else if (!t1.isChecked() && t2.isChecked()){
+                    return -1;
                 } else {
                     return 0;
                 }
