@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -19,7 +20,6 @@ import android.widget.Toast;
 import com.example.grantu.myshoppinglist.Classes.ShoppingHistoryItem;
 import com.example.grantu.myshoppinglist.Classes.ShoppingItem;
 import com.example.grantu.myshoppinglist.Classes.ShoppingListManager;
-import com.example.grantu.myshoppinglist.DBManager;
 import com.example.grantu.myshoppinglist.R;
 import com.example.grantu.myshoppinglist.UI.Fragments.HistoryListsFragment;
 import com.example.grantu.myshoppinglist.UI.Fragments.ShoppingItemsFragment;
@@ -65,10 +65,10 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
     private TextView negativeButton;
     private ListView listView;
     private RadioGroup radioGroup;
+    private TextView warningView;
 
     private EditText nameEdit;
-    private EditText priceEdit;
-    private EditText amountEdit;
+    private EditText notesEdit;
 
 
 
@@ -120,18 +120,16 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 negativeButton = (TextView)v.findViewById(R.id.negative_btn);
 
                 nameEdit = (EditText)v.findViewById(R.id.name_edit);
-                priceEdit = (EditText)v.findViewById(R.id.price_edit);
-                amountEdit = (EditText)v.findViewById(R.id.amount_edit);
+                notesEdit = (EditText)v.findViewById(R.id.notes_edit);
 
                 positiveButton.setOnClickListener(this);
                 negativeButton.setOnClickListener(this);
 
                 if(mType == UPDATE_ITEM){
-                    ShoppingItem s = DBManager.getInstance(mContext).getShopItem(mId);
+                    ShoppingItem s =ShoppingListManager.getInstance(mContext).getShopItemById(mId);
                     dialogTitle.setText(R.string.modify_shopping_item_dialog_title);
                     nameEdit.setText(s.getName());
-                    priceEdit.setText(s.getPrice());
-                    amountEdit.setText(s.getAmount());
+                    notesEdit.setText(s.getNotes());
                 }
             break;
             case DELETE_LIST:
@@ -151,8 +149,8 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 positiveButton = (TextView)v.findViewById(R.id.positive_btn);
                 negativeButton = (TextView)v.findViewById(R.id.negative_btn);
                 nameEdit = (EditText)v.findViewById(R.id.name_edit);
-                amountEdit = (EditText)v.findViewById(R.id.amount_edit);
-
+                notesEdit = (EditText)v.findViewById(R.id.notes_edit);
+                warningView = (TextView) v.findViewById(R.id.save_shopping_list_warning);
                 positiveButton.setOnClickListener(this);
                 negativeButton.setOnClickListener(this);
                 break;
@@ -178,8 +176,8 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 positiveButton.setOnClickListener(this);
                 negativeButton.setOnClickListener(this);
 
-                ShoppingHistoryItem s = DBManager.getInstance(mContext).getHistoryItem(mId);
-                dialogTitle.setText(s.getName()+" - "+s.getDate()+ " - "+s.getTot_price());
+                ShoppingHistoryItem s = ShoppingListManager.getInstance(mContext).getShoppingHistoryItem(mId);
+                dialogTitle.setText(s.getName()+" \n "+s.getDate());
                 dialogContent.setText(s.getNotes());
                 itemToSend = s.getContent();
                 List<ShoppingItem> list = ShopHistoryParser.getInstance().parseStringToList(s.getContent());
@@ -192,7 +190,6 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 radioGroup.setOnCheckedChangeListener(this);
                 negativeButton = (TextView)v.findViewById(R.id.negative_btn);
                 negativeButton.setOnClickListener(this);
-
                 break;
 
         }
@@ -208,8 +205,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
             case ADD_ITEM:
                 if(view.getId() == R.id.positive_btn){
                     String name = nameEdit.getText().toString().trim();
-                    String amount = amountEdit.getText().toString().trim();
-                    String price = priceEdit.getText().toString().trim();
+                    String notes = notesEdit.getText().toString().trim();
 
                     if(name.isEmpty()){
                         nameEdit.setError(getString(R.string.add_shopping_item_name_empty));
@@ -217,14 +213,13 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                         //save or udpate item
                         ShoppingItem s;
                         if(mType == ADD_ITEM){
-                            s = new ShoppingItem(name, amount, price, false);
+                            s = new ShoppingItem(name, notes, false);
                         }  else {
-                            s = DBManager.getInstance(mContext).getShopItem(mId);
+                            s = ShoppingListManager.getInstance(mContext).getShopItemById(mId);
                             s.setName(name);
-                            s.setPrice(price);
-                            s.setAmount(amount);
+                            s.setNotes(notes);
                         }
-                        if (!((mType == ADD_ITEM)? DBManager.getInstance(mContext).insertProduct(s): DBManager.getInstance(mContext).updateProduct(s))) {
+                        if (!((mType == ADD_ITEM)? ShoppingListManager.getInstance(mContext).addShopListItem(s) : ShoppingListManager.getInstance(mContext).updateShopListItem(s))) {
                             Toast.makeText(mContext, getString(R.string.add_shopping_item_insert_error), Toast.LENGTH_LONG).show();
                         } else {
                             ((ShoppingItemsFragment) previousFragment).refresh();
@@ -251,7 +246,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
             case SAVE_LIST:
                 if(view.getId() == R.id.positive_btn){
                     String name = nameEdit.getText().toString().trim();
-                    String notes = amountEdit.getText().toString().trim();
+                    String notes = notesEdit.getText().toString().trim();
                     if(name.isEmpty()){
                         nameEdit.setError(getString(R.string.add_shopping_item_name_empty));
                     } else {
@@ -259,20 +254,24 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                         Calendar c = Calendar.getInstance();
 
                         s.setName(name);
-                        s.setTot_price(((ShoppingItemsFragment) previousFragment).getTotalPrice());
                         s.setNotes(notes);
                         s.setContent(ShopHistoryParser.getInstance().parseListToString(((ShoppingItemsFragment) previousFragment).getListItem()));
                         SimpleDateFormat df = new SimpleDateFormat(FORMAT_DATE);
                         String formattedDate = df.format(c.getTime());
                         s.setDate(formattedDate);
-
-                        if(!DBManager.getInstance(mContext).insertHistoryList(s)){
-                            Toast.makeText(mContext, getString(R.string.add_shopping_item_insert_error), Toast.LENGTH_LONG).show();
+                        if(s.getContent().isEmpty()){
+                            hideKeyboard();
+                            warningView.setVisibility(View.VISIBLE);
                         } else {
-                            ((ShoppingItemsFragment) previousFragment).notifyToHistoryFragment();
-                            Toast.makeText(mContext, getString(R.string.add_shopping_item_insert_well_done), Toast.LENGTH_LONG).show();
+
+                            if (!ShoppingListManager.getInstance(mContext).saveShopHistoryItem(s)) {
+                                Toast.makeText(mContext, getString(R.string.add_shopping_item_insert_error), Toast.LENGTH_LONG).show();
+                            } else {
+                                ((ShoppingItemsFragment) previousFragment).notifyToHistoryFragment();
+                                Toast.makeText(mContext, getString(R.string.add_shopping_item_insert_well_done), Toast.LENGTH_LONG).show();
+                            }
+                            this.dismiss();
                         }
-                        this.dismiss();
                     }
 
                 } else {
@@ -304,6 +303,13 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
     }
 
+    private void hideKeyboard(){
+        if(this.getView() != null){
+            InputMethodManager imm = (InputMethodManager)mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromInputMethod(getView().getWindowToken(),0);
+        }
+    }
+
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
@@ -323,7 +329,6 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 } else if( sort_id == R.id.none_radiobutton){
                     ShoppingListManager.SORT_MODE = ShoppingListManager.NO_ORDER;
                 }
-
                 //back button
                 ((ShoppingItemsFragment) previousFragment).orderList();
                 this.dismiss();
@@ -374,7 +379,6 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 holder = (HistoryItemDetailPlaceholder) view.getTag();
             }
 
-
             holder.setView(getItem(i));
             return view;
         }
@@ -383,22 +387,17 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
     private class HistoryItemDetailPlaceholder{
 
         TextView name;
-        TextView amount;
-        TextView price;
-
+        TextView notes;
 
         public HistoryItemDetailPlaceholder(View v){
-
             name = (TextView)v.findViewById(R.id.history_detail_name);
-            amount = (TextView)v.findViewById(R.id.history_detail_amount);
-            price = (TextView)v.findViewById(R.id.history_detail_price);
+            notes = (TextView)v.findViewById(R.id.history_detail_notes);
 
         }
 
         public void setView(ShoppingItem s){
             name.setText(s.getName());
-            price.setText((!s.getPrice().isEmpty())? s.getPrice()+ " "+mContext.getString(R.string.euro_label) : "");
-            amount.setText(s.getAmount());
+            notes.setText(s.getNotes());
         }
 
 

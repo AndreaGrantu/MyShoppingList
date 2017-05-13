@@ -29,15 +29,16 @@
     <string name="add_shopping_item_dialog_title">Add new item</string>
     <string name="modify_shopping_item_dialog_title">Modify your item</string>
 
-    <string name="add_shopping_item_dialog_content">Insert the name of the new product you want to add in your list (price and abount can be fill later).</string>
+    <string name="add_shopping_item_dialog_content">Insert the name of the new product you want to add in your list nad some useful notes.</string>
     <string name="add_shopping_item_dialog_name">Name*:</string>
-    <string name="add_shopping_item_dialog_amount">Amount (es: 4,55 gr):</string>
+    <string name="add_shopping_item_dialog_notes">Notes:</string>
     <string name="add_shopping_item_dialog_price">Price (currency = Euro):</string>
     <string name="add_shopping_item_dialog_save">SAVE</string>
     <string name="add_shopping_item_dialog_cancel">CANCEL</string>
     <string name="add_shopping_item_name_empty">You must fill name field</string>
     <string name="add_shopping_item_insert_error">There\'s a problem with database, please retry later</string>
     <string name="add_shopping_item_insert_well_done">Your list has been saved, you can find it into the "History" tab</string>
+
 
     <!-- saveshopping_item_dialog -->
     <string name="save_shopping_item_dialog_title">Save shopping list</string>
@@ -47,6 +48,7 @@
     <string name="save_shopping_item_dialog_save">SAVE</string>
     <string name="save_shopping_item_dialog_cancel">CANCEL</string>
     <string name="save_shopping_item_alert_empty">Your list is empty, add at least one product</string>
+    <string name="save_shopping_item_alert_no_selection">*You have to check at least one product</string>
 
     <!-- delete_shopping_history_dialog -->
     <string name="delete_shopping_history_dialog_title">Delete entire history list?</string>

@@ -232,7 +232,7 @@ public class HistoryListsFragment extends Fragment{
     private class HistoryListPlaceholder implements View.OnClickListener{
 
         TextView name;
-        TextView price;
+        TextView notes;
         TextView date;
         ImageView delete;
         LinearLayout ll;
@@ -242,7 +242,7 @@ public class HistoryListsFragment extends Fragment{
 
             ll = (LinearLayout)v.findViewById(R.id.history_item_layout);
             name = (TextView)v.findViewById(R.id.history_item_name);
-            price = (TextView)v.findViewById(R.id.history_item_price);
+            notes = (TextView)v.findViewById(R.id.history_item_notes);
             date = (TextView)v.findViewById(R.id.history_item_date);
             delete = (ImageView)v.findViewById(R.id.history_item_delete);
 
@@ -256,13 +256,13 @@ public class HistoryListsFragment extends Fragment{
             item = s;
             name.setText(s.getName().toUpperCase());
 
-            if(!s.getTot_price().isEmpty()) {
-                price.setText(s.getTot_price() + " " + mActivity.getString(R.string.euro_label));
+            if(!s.getNotes().isEmpty()) {
+                notes.setText(s.getNotes());
             } else {
-                price.setVisibility(View.GONE);
+                notes.setVisibility(View.GONE);
             }
 
-            if(!s.getTot_price().isEmpty()) {
+            if(!s.getNotes().isEmpty()) {
                 date.setText(s.getDate());
             } else {
                 date.setVisibility(View.GONE);

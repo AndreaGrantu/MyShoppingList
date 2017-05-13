@@ -27,8 +27,7 @@ public class DBManager {
     public static final class ShoppingListEntry implements BaseColumns{
         public static final String TABLE_NAME = "SHOPPING_LIST";
         public static final String COLUMN_PRODUCT_NAME = "PRODUCT";
-        public static final String COLUMN_AMOUNT = "AMOUNT";
-        public static final String COLUMN_PRICE = "PRICE";
+        public static final String COLUMN_NOTES = "NOTES";
         public static final String COLUMN_IS_CHECKED = "IS_CHECKED";
     }
 
@@ -38,7 +37,6 @@ public class DBManager {
         public static final String COLUMN_DATE = "DATE";
         public static final String COLUMN_CONTENT = "CONTENT";
         public static final String COLUMN_NOTES = "NOTES";
-        public static final String COLUMN_TOT_PRICE = "TOT_PRICE";
     }
 
 
@@ -47,8 +45,7 @@ public class DBManager {
             + " ("
             + ShoppingListEntry._ID  		                + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             + ShoppingListEntry.COLUMN_PRODUCT_NAME			+ " TEXT NOT NULL,"
-            + ShoppingListEntry.COLUMN_AMOUNT               + " TEXT,"
-            + ShoppingListEntry.COLUMN_PRICE                + " TEXT,"
+            + ShoppingListEntry.COLUMN_NOTES               + " TEXT,"
             + ShoppingListEntry.COLUMN_IS_CHECKED           + " BOOLEAN"
             + ");";
     private final static String TABLE_SHOPPING_HISTORY_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -58,15 +55,13 @@ public class DBManager {
             + ShoppingListHistory.COLUMN_NAME            + " TEXT,"
             + ShoppingListHistory.COLUMN_DATE			    + " TEXT,"
             + ShoppingListHistory.COLUMN_CONTENT            + " TEXT,"
-            + ShoppingListHistory.COLUMN_NOTES            + " TEXT,"
-            + ShoppingListHistory.COLUMN_TOT_PRICE          + " TEXT"
+            + ShoppingListHistory.COLUMN_NOTES            + " TEXT"
             + ");";
 
     private final static String[] SHOPPING_LIST_PROJECTION = {
             ShoppingListEntry._ID,
             ShoppingListEntry.COLUMN_PRODUCT_NAME,
-            ShoppingListEntry.COLUMN_AMOUNT,
-            ShoppingListEntry.COLUMN_PRICE,
+            ShoppingListEntry.COLUMN_NOTES,
             ShoppingListEntry.COLUMN_IS_CHECKED
     };
     private final static String[] SHOPPING_HISTORY_PROJECTION = {
@@ -74,8 +69,7 @@ public class DBManager {
             ShoppingListHistory.COLUMN_NAME,
             ShoppingListHistory.COLUMN_DATE,
             ShoppingListHistory.COLUMN_CONTENT ,
-            ShoppingListHistory.COLUMN_NOTES ,
-            ShoppingListHistory.COLUMN_TOT_PRICE
+            ShoppingListHistory.COLUMN_NOTES
     };
 
     private static final String TABLE_SHOPPING_LIST_DELETE =
@@ -191,9 +185,8 @@ public class DBManager {
 
         ContentValues cv = new ContentValues();
         cv.put(ShoppingListEntry.COLUMN_PRODUCT_NAME,s.getName());
-        cv.put(ShoppingListEntry.COLUMN_PRICE,s.getPrice());
         cv.put(ShoppingListEntry.COLUMN_IS_CHECKED,s.isChecked());
-        cv.put(ShoppingListEntry.COLUMN_AMOUNT,s.getAmount());
+        cv.put(ShoppingListEntry.COLUMN_NOTES,s.getNotes());
         return cv;
 
     }
@@ -210,8 +203,7 @@ public class DBManager {
              ShoppingItem s = new ShoppingItem();
              s.setId(cursor.getInt(cursor.getColumnIndex(ShoppingListEntry._ID)));
              s.setName(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_PRODUCT_NAME)));
-             s.setAmount(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_AMOUNT)));
-             s.setPrice(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_PRICE)));
+             s.setNotes(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_NOTES)));
              s.setIsChecked((cursor.getInt(cursor.getColumnIndex(ShoppingListEntry.COLUMN_IS_CHECKED)) > 0));
 
              list.add(s);
@@ -231,8 +223,7 @@ public class DBManager {
             do{
                 item.setId(cursor.getInt(cursor.getColumnIndex(ShoppingListEntry._ID)));
                 item.setName(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_PRODUCT_NAME)));
-                item.setAmount(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_AMOUNT)));
-                item.setPrice(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_PRICE)));
+                item.setNotes(cursor.getString(cursor.getColumnIndex(ShoppingListEntry.COLUMN_NOTES)));
                 item.setIsChecked((cursor.getInt(cursor.getColumnIndex(ShoppingListEntry.COLUMN_IS_CHECKED)) > 0));
             } while(cursor.moveToNext());
         }
@@ -247,7 +238,6 @@ public class DBManager {
 
         ContentValues cv = new ContentValues();
         cv.put(ShoppingListHistory.COLUMN_NAME,s.getName());
-        cv.put(ShoppingListHistory.COLUMN_TOT_PRICE,s.getTot_price());
         cv.put(ShoppingListHistory.COLUMN_CONTENT,s.getContent());
         cv.put(ShoppingListHistory.COLUMN_NOTES,s.getNotes());
         cv.put(ShoppingListHistory.COLUMN_DATE, s.getDate());
@@ -303,7 +293,6 @@ public class DBManager {
                 s.setName(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_NAME)));
                 s.setContent(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_CONTENT)));
                 s.setDate(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_DATE)));
-                s.setTot_price(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_TOT_PRICE)));
                 s.setNotes(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_NOTES)));
                 list.add(s);
             }
@@ -323,7 +312,6 @@ public class DBManager {
             do{
                 item.setId(cursor.getInt(cursor.getColumnIndex(ShoppingListEntry._ID)));
                 item.setName(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_NAME)));
-                item.setTot_price(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_TOT_PRICE)));
                 item.setContent(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_CONTENT)));
                 item.setNotes(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_NOTES)));
                 item.setDate(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_DATE)));

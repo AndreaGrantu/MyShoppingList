@@ -53,19 +53,20 @@
                 android:layout_height="wrap_content"
                 android:textSize="14dp" />
             <TextView
-                android:id="@+id/amount_label"
+                android:id="@+id/notes_label"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="18dp"
+                android:layout_alignBottom="@id/notes_edit"
                 android:layout_width="wrap_content"
                 android:layout_below="@+id/name_label"
                 android:layout_height="wrap_content"
                 android:text="@string/save_shopping_item_dialog_notes"/>
             <EditText
-                android:id="@+id/amount_edit"
-                android:lines="2"
+                android:id="@+id/notes_edit"
+                android:lines="1"
                 android:layout_marginStart="5dp"
                 android:layout_below="@id/name_edit"
-                android:layout_toRightOf="@id/amount_label"
+                android:layout_toEndOf="@id/notes_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
@@ -73,6 +74,17 @@
 
 
         </RelativeLayout>
+        <TextView
+            android:id="@+id/save_shopping_list_warning"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="10dp"
+            android:visibility="gone"
+            android:textColor="@color/colorWaring"
+            android:text="@string/save_shopping_item_alert_no_selection"/>
 
     </LinearLayout>
 

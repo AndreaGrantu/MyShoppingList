@@ -7,7 +7,6 @@ public class ShoppingHistoryItem {
 
     private int id;
     private String date;
-    private String tot_price;
     private String content;
     private String name;
     private String notes;
@@ -18,14 +17,12 @@ public class ShoppingHistoryItem {
         this.name = s.getName();
         this.id = s.getId();
         this.date = s.getDate();
-        this.tot_price = s.getTot_price();
         this.content = s.getContent();
     }
 
     public ShoppingHistoryItem(String date, String tot_price, String content) {
         this.id = -1;
         this.date = date;
-        this.tot_price = tot_price;
         this.content = content;
     }
 
@@ -37,13 +34,6 @@ public class ShoppingHistoryItem {
         this.content = content;
     }
 
-    public String getTot_price() {
-        return tot_price;
-    }
-
-    public void setTot_price(String tot_price) {
-        this.tot_price = tot_price;
-    }
 
     public String getDate() {
         return date;

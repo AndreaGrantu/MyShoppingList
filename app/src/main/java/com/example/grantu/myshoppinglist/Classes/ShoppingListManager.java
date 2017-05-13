@@ -50,31 +50,18 @@ public class ShoppingListManager {
         return list;
     }
 
-    public void addShopListItem(ShoppingItem item) {
-        mDb.insertProduct(item);
-
+    public boolean addShopListItem(ShoppingItem item) {
+        return mDb.insertProduct(item);
     }
 
-    public void updateShopListItem(ShoppingItem item) {
-        mDb.updateProduct(item);
+    public boolean updateShopListItem(ShoppingItem item) {
+        return mDb.updateProduct(item);
     }
 
     public void deleteShopListItem(ShoppingItem item) {
         mDb.deleteProduct(item);
     }
 
-    public float getTotalPrice() {
-        float mTotalPrice = 0;
-        ArrayList<ShoppingItem> list = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
-        if (!list.isEmpty()) {
-            for (ShoppingItem s : list) {
-                if (s.isChecked() && !s.getPrice().isEmpty()) {
-                    mTotalPrice += Float.parseFloat(s.getPrice());
-                }
-            }
-        }
-        return mTotalPrice;
-    }
 
     public void deleteShopItemList() {
         ArrayList<ShoppingItem> list = (ArrayList<ShoppingItem>) mDb.getAllShoppingItems();
@@ -111,12 +98,23 @@ public class ShoppingListManager {
         }
     }
 
+    public ShoppingItem getShopItemById(int id){
+        return mDb.getShopItem(id);
+    }
+
+
+    public boolean saveShopHistoryItem( ShoppingHistoryItem s){
+        return mDb.insertHistoryList(s);
+    }
+
     /**
      *  Shopping History Item List methods
      *
      */
 
-
+    public ShoppingHistoryItem getShoppingHistoryItem(int id){
+        return mDb.getHistoryItem(id);
+    }
 
 
 }
@@ -129,23 +127,7 @@ class ShopItemComparator implements Comparator<ShoppingItem>{
 
         switch(ShoppingListManager.SORT_MODE){
             case ShoppingListManager.PRICE_ORDER:
-                if(t1.getPrice().isEmpty() && !t2.getPrice().isEmpty()){
-                    return -1;
-                } else if (t1.getPrice().isEmpty() && t2.getPrice().isEmpty()) {
-                    return 0;
-                } else if(!t1.getPrice().isEmpty() && t2.getPrice().isEmpty()){
-                    return 1;
-                } else {
-                    float p1 = Float.parseFloat(t1.getPrice());
-                    float p2 = Float.parseFloat(t2.getPrice());
-                    if ( p1 > p2){
-                        return 1;
-                    } else if ( p1 < p2){
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                }
+
 
             case ShoppingListManager.NAME_ORDER:
                 return t1.getName().compareTo(t2.getName());

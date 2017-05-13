@@ -31,9 +31,7 @@ public class ShopHistoryParser {
             if(s.isChecked()) {
                 output.append(s.getName());
                 output.append(INTRA_ITEM_DIVISOR);
-                output.append(((s.getAmount().equals("")) ? " " : s.getAmount()));
-                output.append(INTRA_ITEM_DIVISOR);
-                output.append(((s.getPrice().equals("")) ? " " : s.getPrice()));
+                output.append(s.getNotes().isEmpty() ? " " : s.getNotes().isEmpty());
                 //end element
                 output.append(INTER_ITEM_DIVISOR);
             }
@@ -52,8 +50,7 @@ public class ShopHistoryParser {
             ShoppingItem si = new ShoppingItem();
             String[] field = s.split(INTRA_ITEM_DIVISOR);
             si.setName((field[0].equals(" "))? "" : field[0] );
-            si.setAmount((field[1].equals(" "))? "" : field[1] );
-            si.setPrice((field[2].equals(" "))? "" : field[2] );
+            si.setNotes((field[1].equals(" "))? "" : field[1] );
             si.setIsChecked(false);
             list.add(si);
         }

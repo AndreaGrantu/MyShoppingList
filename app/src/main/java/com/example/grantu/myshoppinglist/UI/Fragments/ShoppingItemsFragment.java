@@ -61,10 +61,8 @@ public class ShoppingItemsFragment extends Fragment {
     private ShoppingListManager mSLManager;
 
     private ListView mShoppingListView;
-    private TextView mHeaderList;
     private ShoppingItemsReceiver receiver = new ShoppingItemsReceiver();
 
-    private float mTotalPrice = 0;
 
     public ShoppingItemsFragment() {
     }
@@ -89,12 +87,10 @@ public class ShoppingItemsFragment extends Fragment {
 
     private void loadData(){
         mShoppingListView.setAdapter(new ShoppingListAdapter(mActivity, mSLManager.getShopList()));
-     //   setTotalPrice();
     }
 
     private void getViewReferences(View v) {
         mShoppingListView =(ListView)v.findViewById(R.id.shopping_list);
-        mHeaderList = (TextView)v.findViewById(R.id.header);
         mShoppingListView.setEmptyView(v.findViewById(R.id.emptylayout));
     }
 
@@ -142,7 +138,7 @@ public class ShoppingItemsFragment extends Fragment {
 
     @Override
     public void onResume() {
-        mActivity.registerReceiver(receiver,new IntentFilter(FILTER));
+        mActivity.registerReceiver(receiver, new IntentFilter(FILTER));
         super.onResume();
     }
 
@@ -224,28 +220,12 @@ public class ShoppingItemsFragment extends Fragment {
         loadData();
     }
 
-    public String getTotalPrice(){
-        return String.valueOf(this.mTotalPrice);
-    }
 
     public List<ShoppingItem> getListItem(){
         return mSLManager.getShopList();
     }
 
-    private void updateTotalPrice(String price){
-        mTotalPrice += Float.parseFloat(price);
-        mHeaderList.setText(mActivity.getString(R.string.shop_list_total_price_label) + " " + mTotalPrice + " "+mActivity.getString(R.string.euro_label));
-    }
 
-    private void setTotalPrice(){
-        mTotalPrice = 0;
-        for(ShoppingItem s: mSLManager.getShopList()){
-            if(s.isChecked() && !s.getPrice().isEmpty()){
-                mTotalPrice += Float.parseFloat(s.getPrice());
-            }
-        }
-
-    }
 
     public void notifyToHistoryFragment() {
         Intent intent = new Intent(HistoryListsFragment.FILTER);
@@ -260,7 +240,7 @@ public class ShoppingItemsFragment extends Fragment {
      */
 
     private class ShoppingListAdapter extends BaseAdapter{
-;
+
         Context mContext;
         ArrayList<ShoppingItem> itemsList;
         LayoutInflater layoutInflater;
@@ -314,8 +294,7 @@ public class ShoppingItemsFragment extends Fragment {
 
         ShoppingItem item;
         TextView item_name;
-        TextView item_price;
-        TextView item_amount;
+        TextView item_notes;
         CheckBox checkBox;
         ImageView deleteImage;
         LinearLayout background;
@@ -325,8 +304,7 @@ public class ShoppingItemsFragment extends Fragment {
 
             LinearLayout ll = (LinearLayout)background.findViewById(R.id.item_layout);
                 item_name = (TextView)ll.findViewById(R.id.product_name);
-                item_price = (TextView)ll.findViewById(R.id.product_price);
-                item_amount = (TextView)ll.findViewById(R.id.product_amount);
+                item_notes = (TextView)ll.findViewById(R.id.product_notes);
 
             checkBox = (CheckBox)background.findViewById(R.id.item_checkbox);
             deleteImage = (ImageView)background.findViewById(R.id.delete_item);
@@ -340,15 +318,10 @@ public class ShoppingItemsFragment extends Fragment {
         public void setView(ShoppingItem s){
             item = s;
             item_name.setText(s.getName().toUpperCase());
-            if(!s.getAmount().isEmpty()) {
-                item_amount.setText(s.getAmount());
+            if(!s.getNotes().isEmpty()) {
+                item_notes.setText(s.getNotes());
             } else {
-                item_amount.setVisibility(View.GONE);
-            }
-            if(!s.getPrice().isEmpty()) {
-                item_price.setText(s.getPrice() +" "+ mActivity.getString(R.string.euro_label));
-            } else {
-                item_price.setVisibility(View.GONE);
+                item_notes.setVisibility(View.GONE);
             }
 
             checkBox.setChecked(s.isChecked());
@@ -370,9 +343,6 @@ public class ShoppingItemsFragment extends Fragment {
                     showDialog(CustomDialog.UPDATE_ITEM,item.getId());
                     break;
                 case R.id.delete_item:
-                    if(item.isChecked()){
-                        updateTotalPrice("-"+item.getPrice());
-                    }
                     mSLManager.deleteShopListItem(item);
                     loadData();
                     break;
@@ -380,14 +350,8 @@ public class ShoppingItemsFragment extends Fragment {
                     item.setIsChecked(!item.isChecked());
                     if(item.isChecked()){
                         background.setBackgroundResource(R.color.colorPrimaryLight);
-                        if(!item.getPrice().isEmpty()) {
-                            updateTotalPrice(item.getPrice());
-                        }
                     } else {
                         background.setBackgroundResource(Color.TRANSPARENT);
-                        if(!item.getPrice().isEmpty()) {
-                            updateTotalPrice("-" + item.getPrice());
-                        }
                     }
                     mSLManager.updateShopListItem(item);
                     break;

@@ -28,7 +28,7 @@
             android:textColor="@color/colorTextPrimary"
             android:textSize="@dimen/primary_text_dimen_list_item"/>
         <TextView
-            android:id="@+id/history_item_price"
+            android:id="@+id/history_item_notes"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

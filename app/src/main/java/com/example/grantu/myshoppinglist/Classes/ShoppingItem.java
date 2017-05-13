@@ -7,8 +7,7 @@ public class ShoppingItem {
 
     private int id;
     private String name;
-    private String amount;
-    private String  price;
+    private String notes;
     private boolean isChecked;
 
     public ShoppingItem(){};
@@ -16,23 +15,20 @@ public class ShoppingItem {
     public ShoppingItem(ShoppingItem s){
         this.id = s.getId();
         this.name = s.getName();
-        this.amount = s.getAmount();
-        this.price = s.getPrice();
+        this.notes = s.getNotes();
         this.isChecked = s.isChecked();
     }
 
-    public ShoppingItem(String name, String amount, String price, boolean isChecked){
+    public ShoppingItem(String name, String notes, boolean isChecked){
         this.name = name;
-        this.amount = amount;
-        this.price = price;
+        this.notes = notes;
         this.isChecked = isChecked;
         id = -1;
     }
 
-    public ShoppingItem(int ids,String name, String amount, String price, boolean isChecked){
+    public ShoppingItem(int ids,String name, String notes, boolean isChecked){
         this.name = name;
-        this.amount = amount;
-        this.price = price;
+        this.notes = notes;
         this.isChecked = isChecked;
         this.id = ids;
     }
@@ -44,13 +40,7 @@ public class ShoppingItem {
     public void setId(int i){
         this.id = i;
     }
-    public String getPrice() {
-        return price;
-    }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
 
     public boolean isChecked() {
         return isChecked;
@@ -60,13 +50,6 @@ public class ShoppingItem {
         this.isChecked = isChecked;
     }
 
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
 
     public String getName() {
         return name;
@@ -74,5 +57,13 @@ public class ShoppingItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setNotes(String n){
+        this.notes = n;
+    }
+
+    public String getNotes(){
+        return this.notes;
     }
 }

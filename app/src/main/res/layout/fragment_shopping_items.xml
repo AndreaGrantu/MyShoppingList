@@ -16,16 +16,5 @@
         <include
             android:id="@+id/emptylayout"
             layout="@layout/shopping_list_empty_layout"/>
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:padding="@dimen/padding_shopping_list_header"
-        android:textStyle="bold"
-        android:text="@string/shop_list_total_price_label"
-        android:textSize="@dimen/primary_text_dimen_header"
-        android:background="@drawable/shoplist_header_background"
-        android:layout_gravity="center_vertical" />
+
 </LinearLayout>
