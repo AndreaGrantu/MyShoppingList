@@ -7,6 +7,7 @@ import com.example.grantu.myshoppinglist.DBManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Grantu on 06/05/2017.
@@ -106,6 +107,18 @@ public class ShoppingListManager {
         return mDb.insertHistoryList(s);
     }
 
+    public List<ShoppingItem> searchItem(String name) {
+        ArrayList<ShoppingItem> list = new ArrayList<>();
+        if(!name.isEmpty()) {
+            for (ShoppingItem s : getShopList()) {
+                if (s.getName().startsWith(name)) {
+                    list.add(s);
+                }
+            }
+        }
+        return list;
+    }
+
     /**
      *  Shopping History Item List methods
      *
@@ -114,6 +127,7 @@ public class ShoppingListManager {
     public ShoppingHistoryItem getShoppingHistoryItem(int id){
         return mDb.getHistoryItem(id);
     }
+
 
 
 }

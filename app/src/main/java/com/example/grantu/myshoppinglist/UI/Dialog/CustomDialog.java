@@ -48,6 +48,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
     public final static int DELETE_HISTORY_LIST = UPDATE_ITEM+1;
     public final static int HISTORY_LIST_ITEM = DELETE_HISTORY_LIST+1;
     public final static int SORT_LIST = HISTORY_LIST_ITEM+1;
+    public final static int SEARCH_ITEM = SORT_LIST +1;
 
 
 
@@ -193,6 +194,18 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 negativeButton.setOnClickListener(this);
                 break;
 
+            case SEARCH_ITEM:
+                v = inflater.inflate(R.layout.dialog_search_shopping_item, container, false);
+                dialogContent = (TextView)v.findViewById(R.id.dialog_content);
+                dialogTitle = (TextView)v.findViewById(R.id.dialog_title);
+                positiveButton = (TextView)v.findViewById(R.id.positive_btn);
+                negativeButton = (TextView)v.findViewById(R.id.negative_btn);
+                nameEdit = (EditText)v.findViewById(R.id.name_edit);
+                positiveButton.setOnClickListener(this);
+                negativeButton.setOnClickListener(this);
+                break;
+
+
         }
         return v;
     }
@@ -298,6 +311,12 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 if(view.getId() == R.id.negative_btn){
                     this.dismiss();
                 }
+                break;
+            case SEARCH_ITEM:
+                if(view.getId() == R.id.positive_btn){
+                    ((ShoppingItemsFragment) previousFragment).searchItem(nameEdit.getText().toString().trim());
+                }
+                this.dismiss();
                 break;
 
         }

@@ -37,7 +37,7 @@ import java.util.List;
 public class ShoppingItemsFragment extends Fragment {
 
     public static final String FILTER ="NEW_LIST";
-
+    private static boolean IS_SEARCH_MODE = false;
     public class ShoppingItemsReceiver extends BroadcastReceiver {
 
         @Override
@@ -56,7 +56,7 @@ public class ShoppingItemsFragment extends Fragment {
     private static final String TAG = "ShoppingItemsFragment";
     public static final String REUSE_LIST="NEW_ELEMENT";
 
-
+    private Menu menu;
     private Activity mActivity;
     private ShoppingListManager mSLManager;
 
@@ -152,6 +152,12 @@ public class ShoppingItemsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_shoppinglist_fragment, menu);
+        this.menu = menu;
+        if(IS_SEARCH_MODE){
+            setSearchMenu();
+        } else {
+            exitFromSearchMenuMode();
+        }
     }
 
     @Override
@@ -190,6 +196,12 @@ public class ShoppingItemsFragment extends Fragment {
                     showDialog(CustomDialog.SORT_LIST);
                 }
                 break;
+            case R.id.action_search_item:
+                if(!mItems.isEmpty()){
+                    showDialog(CustomDialog.SEARCH_ITEM);
+                }
+            case R.id.action_back:
+                exitFromSearchMode();
             default:
                 break;
 
@@ -222,8 +234,46 @@ public class ShoppingItemsFragment extends Fragment {
         return mSLManager.getShopList();
     }
 
+    public void searchItem(String itemToSearch){
+        IS_SEARCH_MODE = true;
+        setSearchMode(itemToSearch);
+    }
 
+    private void setSearchMode(String s) {
+        ArrayList<ShoppingItem> items = (ArrayList<ShoppingItem>) mSLManager.searchItem(s);
+        if(items.isEmpty()){
+            View v = mShoppingListView.getEmptyView();
+            TextView text = (TextView) v.findViewById(R.id.empty_text);
+            text.setText(getString(R.string.shop_empty_search));
+        }
+        mShoppingListView.setAdapter(new ShoppingListAdapter(mActivity,items));
+        setSearchMenu();
+    }
 
+    private void setSearchMenu(){
+        menu.findItem(R.id.action_add_item).setVisible(false);
+        menu.findItem(R.id.action_search_item).setVisible(false);
+        menu.findItem(R.id.action_save_list).setVisible(false);
+        menu.findItem(R.id.action_unselect_list).setVisible(false);
+        menu.findItem(R.id.action_delete_list).setVisible(false);
+        menu.findItem(R.id.action_sort_list).setVisible(false);
+        menu.findItem(R.id.action_back).setVisible(true);
+    }
+
+    private void exitFromSearchMenuMode(){
+        menu.findItem(R.id.action_add_item).setVisible(true);
+        menu.findItem(R.id.action_search_item).setVisible(true);
+        menu.findItem(R.id.action_save_list).setVisible(true);
+        menu.findItem(R.id.action_unselect_list).setVisible(true);
+        menu.findItem(R.id.action_delete_list).setVisible(true);
+        menu.findItem(R.id.action_sort_list).setVisible(true);
+        menu.findItem(R.id.action_back).setVisible(false);
+    }
+    private void exitFromSearchMode(){
+        IS_SEARCH_MODE = false;
+        mShoppingListView.setAdapter(new ShoppingListAdapter(mActivity, mSLManager.getShopList()));
+        exitFromSearchMenuMode();
+    }
     public void notifyToHistoryFragment() {
         Intent intent = new Intent(HistoryListsFragment.FILTER);
         intent.putExtra(HistoryListsFragment.UPDATE,true);

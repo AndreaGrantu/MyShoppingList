@@ -12,12 +12,15 @@
     <string name="menu_add_item">Add Item</string>
     <string name="menu_save_list">Save List</string>
     <string name="menu_sort_list">Sort</string>
+    <string name="menu_back">Back</string>
+    <string name="menu_search_list">Search</string>
+
 
 
     <!-- shop list section-->
     <string name="shop_list_total_price_label">Total price:</string>
     <string name="shop_list_empty">This is your shop list.\nPress the \'+\' menu button to add a new item in your list. You can also delete your list or save it when you end your shop.</string>
-
+    <string name="shop_empty_search">Product not found</string>
 
     <!-- delete_shoppping_list_dialog -->
     <string name="delete_shopping_list_dialog_title">Delete entire list?</string>
@@ -72,8 +75,10 @@
     <string name="dialog_sort_option_name">By name</string>
     <string name="dialog_sort_option_price">By price</string>
     <string name="dialog_sort_option_none">None</string>
-    <string name="dialog_sort_back">BACK</string>
+    <string name="dialog_sort_back">CANCEL</string>
 
-
-
+    <string name="dialog_search_title">Search your product</string>
+    <string name="dialog_search_content">Type your product or at least its first letters</string>
+    <string name="dialog_search_agree">SEARCH</string>
+    <string name="dialog_search_back">CANCEL</string>
 </resources>
