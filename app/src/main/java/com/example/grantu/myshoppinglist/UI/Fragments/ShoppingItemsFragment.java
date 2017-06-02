@@ -378,8 +378,6 @@ public class ShoppingItemsFragment extends Fragment {
                 background.setBackgroundResource(Color.TRANSPARENT);
             }
 
-
-
         }
 
         @Override

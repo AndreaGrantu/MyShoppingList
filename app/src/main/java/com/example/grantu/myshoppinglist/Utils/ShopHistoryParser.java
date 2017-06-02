@@ -31,7 +31,7 @@ public class ShopHistoryParser {
             if(s.isChecked()) {
                 output.append(s.getName());
                 output.append(INTRA_ITEM_DIVISOR);
-                output.append(s.getNotes().isEmpty() ? " " : s.getNotes().isEmpty());
+                output.append(s.getNotes().isEmpty() ? " " : s.getNotes());
                 //end element
                 output.append(INTER_ITEM_DIVISOR);
             }

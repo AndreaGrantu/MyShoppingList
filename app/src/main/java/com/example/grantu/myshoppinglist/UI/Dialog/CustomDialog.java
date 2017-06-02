@@ -62,6 +62,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
     private TextView dialogContent;
     private TextView dialogTitle;
+    private TextView dialogDatePrice;
     private TextView positiveButton;
     private TextView negativeButton;
     private ListView listView;
@@ -70,6 +71,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
     private EditText nameEdit;
     private EditText notesEdit;
+    private EditText priceEdit;
 
 
 
@@ -151,6 +153,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 negativeButton = (TextView)v.findViewById(R.id.negative_btn);
                 nameEdit = (EditText)v.findViewById(R.id.name_edit);
                 notesEdit = (EditText)v.findViewById(R.id.notes_edit);
+                priceEdit = (EditText)v.findViewById(R.id.price_edit);
                 warningView = (TextView) v.findViewById(R.id.save_shopping_list_warning);
                 positiveButton.setOnClickListener(this);
                 negativeButton.setOnClickListener(this);
@@ -171,6 +174,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 v = inflater.inflate(R.layout.dialog_history_item_details, container, false);
                 dialogContent = (TextView)v.findViewById(R.id.dialog_content);
                 dialogTitle = (TextView)v.findViewById(R.id.dialog_title);
+                dialogDatePrice = (TextView)v.findViewById(R.id.dialog_date_price);
                 positiveButton = (TextView)v.findViewById(R.id.positive_btn);
                 negativeButton = (TextView)v.findViewById(R.id.negative_btn);
                 listView = (ListView)v.findViewById(R.id.history_details);
@@ -178,7 +182,8 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 negativeButton.setOnClickListener(this);
 
                 ShoppingHistoryItem s = ShoppingListManager.getInstance(mContext).getShoppingHistoryItem(mId);
-                dialogTitle.setText(s.getName()+" \n "+s.getDate());
+                dialogTitle.setText(s.getName());
+                dialogDatePrice.setText(s.getDate()+"\n"+(s.getPrice().isEmpty() ? " - " : s.getPrice()));
                 dialogContent.setText(s.getNotes());
                 itemToSend = s.getContent();
                 List<ShoppingItem> list = ShopHistoryParser.getInstance().parseStringToList(s.getContent());
@@ -217,6 +222,10 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
         switch (mType){
             case UPDATE_ITEM:
             case ADD_ITEM:
+                if(!(previousFragment instanceof ShoppingItemsFragment)){
+                    break;
+                }
+
                 if(view.getId() == R.id.positive_btn){
                     String name = nameEdit.getText().toString().trim();
                     String notes = notesEdit.getText().toString().trim();
@@ -250,6 +259,9 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
             break;
 
             case DELETE_LIST:
+                if(!(previousFragment instanceof ShoppingItemsFragment)){
+                    break;
+                }
                 if(view.getId() == R.id.positive_btn){
                     ((ShoppingItemsFragment) previousFragment).deleteList();
                 }
@@ -258,9 +270,13 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
             break;
 
             case SAVE_LIST:
+                if(!(previousFragment instanceof ShoppingItemsFragment)){
+                    break;
+                }
                 if(view.getId() == R.id.positive_btn){
                     String name = nameEdit.getText().toString().trim();
                     String notes = notesEdit.getText().toString().trim();
+                    String price = priceEdit.getText().toString().trim();
                     if(name.isEmpty()){
                         nameEdit.setError(getString(R.string.add_shopping_item_name_empty));
                     } else {
@@ -269,6 +285,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
                         s.setName(name);
                         s.setNotes(notes);
+                        s.setPrice(price);
                         s.setContent(ShopHistoryParser.getInstance().parseListToString(((ShoppingItemsFragment) previousFragment).getListItem()));
                         SimpleDateFormat df = new SimpleDateFormat(FORMAT_DATE);
                         String formattedDate = df.format(c.getTime());

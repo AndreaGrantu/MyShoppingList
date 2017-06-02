@@ -71,9 +71,27 @@
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
                 />
-
-
+            <TextView
+                android:id="@+id/price_label"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="18dp"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/notes_label"
+                android:layout_height="wrap_content"
+                android:text="@string/save_shopping_item_dialog_price"/>
+            <EditText
+                android:id="@+id/price_edit"
+                android:lines="1"
+                android:inputType="numberDecimal"
+                android:layout_marginStart="5dp"
+                android:layout_below="@id/notes_edit"
+                android:layout_toEndOf="@id/price_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                />
         </RelativeLayout>
+
         <TextView
             android:id="@+id/save_shopping_list_warning"
             android:layout_width="match_parent"

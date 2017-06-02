@@ -10,6 +10,7 @@ public class ShoppingHistoryItem {
     private String content;
     private String name;
     private String notes;
+    private String price;
 
     public ShoppingHistoryItem(){}
 
@@ -65,5 +66,13 @@ public class ShoppingHistoryItem {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

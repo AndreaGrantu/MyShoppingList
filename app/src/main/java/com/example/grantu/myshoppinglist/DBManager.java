@@ -37,6 +37,7 @@ public class DBManager {
         public static final String COLUMN_DATE = "DATE";
         public static final String COLUMN_CONTENT = "CONTENT";
         public static final String COLUMN_NOTES = "NOTES";
+        public static final String COLUMN_PRICE = "PRICES";
     }
 
 
@@ -55,7 +56,8 @@ public class DBManager {
             + ShoppingListHistory.COLUMN_NAME            + " TEXT,"
             + ShoppingListHistory.COLUMN_DATE			    + " TEXT,"
             + ShoppingListHistory.COLUMN_CONTENT            + " TEXT,"
-            + ShoppingListHistory.COLUMN_NOTES            + " TEXT"
+            + ShoppingListHistory.COLUMN_NOTES            + " TEXT,"
+            + ShoppingListHistory.COLUMN_PRICE            + " TEXT"
             + ");";
 
     private final static String[] SHOPPING_LIST_PROJECTION = {
@@ -69,7 +71,8 @@ public class DBManager {
             ShoppingListHistory.COLUMN_NAME,
             ShoppingListHistory.COLUMN_DATE,
             ShoppingListHistory.COLUMN_CONTENT ,
-            ShoppingListHistory.COLUMN_NOTES
+            ShoppingListHistory.COLUMN_NOTES,
+            ShoppingListHistory.COLUMN_PRICE
     };
 
     private static final String TABLE_SHOPPING_LIST_DELETE =
@@ -241,6 +244,7 @@ public class DBManager {
         cv.put(ShoppingListHistory.COLUMN_CONTENT,s.getContent());
         cv.put(ShoppingListHistory.COLUMN_NOTES,s.getNotes());
         cv.put(ShoppingListHistory.COLUMN_DATE, s.getDate());
+        cv.put(ShoppingListHistory.COLUMN_PRICE, s.getPrice());
         return cv;
 
     }
@@ -294,6 +298,7 @@ public class DBManager {
                 s.setContent(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_CONTENT)));
                 s.setDate(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_DATE)));
                 s.setNotes(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_NOTES)));
+                s.setPrice(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_PRICE)));
                 list.add(s);
             }
         }
@@ -315,12 +320,14 @@ public class DBManager {
                 item.setContent(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_CONTENT)));
                 item.setNotes(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_NOTES)));
                 item.setDate(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_DATE)));
+                item.setPrice(cursor.getString(cursor.getColumnIndex(ShoppingListHistory.COLUMN_PRICE)));
             } while(cursor.moveToNext());
         }
         return item;
-
-
     }
+
+
+
     //class helper
     private static class DBHelper extends SQLiteOpenHelper {
 

@@ -46,8 +46,9 @@
     <!-- saveshopping_item_dialog -->
     <string name="save_shopping_item_dialog_title">Save shopping list</string>
     <string name="save_shopping_item_dialog_content">You can now save your list (put the name and some notes, like the name of the supermarket or the day)</string>
-    <string name="save_shopping_item_dialog_name">Name*:</string>
-    <string name="save_shopping_item_dialog_notes">Notes:</string>
+    <string name="save_shopping_item_dialog_name">Name:</string>
+    <string name="save_shopping_item_dialog_notes">Notes*:</string>
+    <string name="save_shopping_item_dialog_price">Price*:</string>
     <string name="save_shopping_item_dialog_save">SAVE</string>
     <string name="save_shopping_item_dialog_cancel">CANCEL</string>
     <string name="save_shopping_item_alert_empty">Your list is empty, add at least one product</string>

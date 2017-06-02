@@ -14,7 +14,18 @@
         android:textSize="18dp"
         android:paddingTop="24dp"
         android:paddingBottom="10dp"
-        android:text="@string/add_shopping_item_dialog_title"/>
+        android:text="Spesa 1 "/>
+    <TextView
+        android:id="@+id/dialog_date_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:textSize="16dp"
+        android:paddingTop="4dp"
+        android:text="gg/mm/yyy\nPrice "/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,13 +38,14 @@
             android:paddingRight="24dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="@string/add_shopping_item_dialog_content"/>
+            android:text="notes notes notes notes notes notes notes notes notes notes notes notes"/>
         <ListView
             android:id="@+id/history_details"
             android:layout_width="match_parent"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:paddingTop="10dp"
+            android:divider="@color/material_blue_grey_800"
             android:paddingBottom="10dp"
             android:layout_height="205dp"/>
 
