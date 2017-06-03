@@ -128,6 +128,9 @@ public class ShoppingListManager {
         return mDb.getHistoryItem(id);
     }
 
+    public List<ShoppingHistoryItem> getAllShoppingHistoryItems(){
+        return mDb.getAllShoppingHistory();
+    }
 
 
 }

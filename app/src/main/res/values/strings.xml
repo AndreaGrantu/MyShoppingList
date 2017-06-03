@@ -82,4 +82,49 @@
     <string name="dialog_search_content">Type your product or at least its first letters</string>
     <string name="dialog_search_agree">SEARCH</string>
     <string name="dialog_search_back">CANCEL</string>
+
+    <!-- dialog money spent -->
+    <string-array name="periods_array">
+        <item>@string/dialog_money_jan</item>
+        <item>@string/dialog_money_feb</item>
+        <item>@string/dialog_money_mar</item>
+        <item>@string/dialog_money_apr</item>
+        <item>@string/dialog_money_may</item>
+        <item>@string/dialog_money_june</item>
+        <item>@string/dialog_money_july</item>
+        <item>@string/dialog_money_aug</item>
+        <item>@string/dialog_money_sep</item>
+        <item>@string/dialog_money_oct</item>
+        <item>@string/dialog_money_nov</item>
+        <item>@string/dialog_money_dec</item>
+        <item>@string/dialog_money_six_month</item>
+        <item>@string/dialog_money_three_month</item>
+        <item>@string/dialog_money_year</item>
+        <item>@string/dialog_money_month</item>
+        <item>@string/dialog_money_two_month</item>
+    </string-array>
+
+    <string name="dialog_money_jan">January</string>
+    <string name="dialog_money_feb">February</string>
+    <string name="dialog_money_mar">March</string>
+    <string name="dialog_money_apr">April</string>
+    <string name="dialog_money_may">May</string>
+    <string name="dialog_money_june">June</string>
+    <string name="dialog_money_july">July</string>
+    <string name="dialog_money_aug">August</string>
+    <string name="dialog_money_sep">September</string>
+    <string name="dialog_money_oct">October</string>
+    <string name="dialog_money_nov">November</string>
+    <string name="dialog_money_dec">September</string>
+    <string name="dialog_money_month">Last month</string>
+    <string name="dialog_money_three_month">Last three months</string>
+    <string name="dialog_money_two_month">Last two months</string>
+    <string name="dialog_money_six_month">Last six months</string>
+    <string name="dialog_money_year">Last year</string>
+
+    <string name="dialog_money_spent_title">Calculate your shop</string>
+    <string name="dialog_money_spent_content">Tap one category (only history with price will be consider).</string>
+    <string name="dialog_money_spent_back">BACK</string>
+
+
 </resources>

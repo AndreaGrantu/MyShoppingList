@@ -25,6 +25,7 @@ import com.example.grantu.myshoppinglist.UI.Fragments.HistoryListsFragment;
 import com.example.grantu.myshoppinglist.UI.Fragments.ShoppingItemsFragment;
 import com.example.grantu.myshoppinglist.Utils.ShopHistoryParser;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +39,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
     public final static  String TYPE = "TYPE";
     public final static  String ITEM_ID = "ITEM_ID";
-    public final static  String FORMAT_DATE = "\"dd-MMM-yyyy\"";
+    public final static  String FORMAT_DATE = "dd-MM-yyyy";
 
 
     public final static int ADD_ITEM = 0;
@@ -49,9 +50,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
     public final static int HISTORY_LIST_ITEM = DELETE_HISTORY_LIST+1;
     public final static int SORT_LIST = HISTORY_LIST_ITEM+1;
     public final static int SEARCH_ITEM = SORT_LIST +1;
-
-
-
+    public final static int MONEY_SPENT = SEARCH_ITEM +1;
 
 
     private Context mContext;
@@ -72,7 +71,6 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
     private EditText nameEdit;
     private EditText notesEdit;
     private EditText priceEdit;
-
 
 
     public CustomDialog(Context context){
@@ -209,6 +207,14 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 positiveButton.setOnClickListener(this);
                 negativeButton.setOnClickListener(this);
                 break;
+            case MONEY_SPENT:
+                v = inflater.inflate(R.layout.dialog_money_spent, container, false);
+                dialogContent = (TextView)v.findViewById(R.id.dialog_content);
+                dialogTitle = (TextView)v.findViewById(R.id.dialog_title);
+                positiveButton = (TextView)v.findViewById(R.id.positive_btn);
+                listView = (ListView)v.findViewById(R.id.periods);
+
+                break;
 
 
         }
@@ -335,6 +341,11 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 }
                 this.dismiss();
                 break;
+            case MONEY_SPENT:
+                if(view.getId() == R.id.positive_btn){
+                    this.dismiss();
+                };
+                break;
 
         }
 
@@ -393,13 +404,11 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
     private class HistoryItemDetailAdapter extends BaseAdapter {
 
         LayoutInflater layoutInflater;
-        Context mActivity;
         List<ShoppingItem> mList;
 
 
         public HistoryItemDetailAdapter(Activity activity,List<ShoppingItem> l){
             mList = l;
-            mContext = activity.getApplicationContext();
             layoutInflater = activity.getLayoutInflater();
         }
 
@@ -456,5 +465,164 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
 
     }
+
+
+    private class HistoryPeriodsMoneyAdapter extends BaseAdapter{
+
+        LayoutInflater layoutInflater;
+        String[] periods;
+
+
+        public HistoryPeriodsMoneyAdapter(Activity activity){
+            layoutInflater = activity.getLayoutInflater();
+            periods = mContext.getResources().getStringArray(R.array.periods_array);
+        }
+
+        @Override
+        public int getCount() {
+            return periods.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return periods[i];
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            periodPlaceHolder holder;
+
+            if( view == null ){
+                view = layoutInflater.inflate(R.layout.dialog_item_periods,viewGroup,false);
+                holder = new periodPlaceHolder(view);
+                view.setTag(holder);
+            } else {
+                holder = (periodPlaceHolder) view.getTag();
+            }
+            holder.setView(periods[i]);
+
+            return view;
+        }
+
+
+
+    }
+
+    private class periodPlaceHolder{
+        TextView textView;
+        String period;
+
+        public periodPlaceHolder(View v){
+            textView = (TextView)v.findViewById(R.id.periods_item);
+        }
+
+        public void setView(String s){
+            textView.setText(s);
+            period = s;
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    calculateMoney();
+                }
+            });
+        }
+
+        private void calculateMoney(){
+
+            String result;
+
+            if(period.equals(mContext.getString(R.string.dialog_money_jan))){
+                result = getMoneySpent(Calendar.JANUARY);
+            } else if(period.equals(getString(R.string.dialog_money_feb))){
+                    result = getMoneySpent(Calendar.FEBRUARY);
+            } else if(period.equals(getString(R.string.dialog_money_mar))){
+                result = getMoneySpent(Calendar.MARCH);
+            } else if(period.equals(getString(R.string.dialog_money_apr))){
+                result = getMoneySpent(Calendar.APRIL);
+            } else if(period.equals(getString(R.string.dialog_money_may))){
+                result = getMoneySpent(Calendar.MAY);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_june))){
+                result = getMoneySpent(Calendar.JUNE);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_july))){
+                result = getMoneySpent(Calendar.JULY);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_aug))){
+                result = getMoneySpent(Calendar.AUGUST);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_sep))){
+                result = getMoneySpent(Calendar.SEPTEMBER);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_oct))){
+                result = getMoneySpent(Calendar.OCTOBER);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_nov))){
+                result = getMoneySpent(Calendar.NOVEMBER);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_dec))){
+                result = getMoneySpent(Calendar.DECEMBER);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_month))){
+                result = getMoneySpentLastMonth(1);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_two_month))){
+                result = getMoneySpentLastMonth(2);
+            }else if(period.equals(mContext.getString(R.string.dialog_money_three_month))){
+                result = getMoneySpentLastMonth(3);
+            }else if(period.equals(mContext.getString(R.string.dialog_money_six_month))){
+                result = getMoneySpentLastMonth(6);
+            } else if(period.equals(mContext.getString(R.string.dialog_money_year))){
+                result = getMoneySpentLastMonth(12);
+            }
+
+            //set the textview
+
+        }
+
+
+        private String getMoneySpent(int p){
+            float total = 0;
+            List<ShoppingHistoryItem> list = ShoppingListManager.getInstance(mContext).getAllShoppingHistoryItems();
+            SimpleDateFormat df = new SimpleDateFormat(FORMAT_DATE);
+            Calendar c = Calendar.getInstance();
+
+            for(ShoppingHistoryItem sh : list){
+                try {
+                    c.setTime(df.parse(sh.getDate()));
+                    if(p == c.get(Calendar.MONTH) && !sh.getPrice().isEmpty()){
+                        total += Float.parseFloat(sh.getPrice());
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return Float.toString(total);
+        }
+
+        private String getMoneySpentLastMonth(int n){
+            float total = 0;
+            Calendar thr = Calendar.getInstance();
+            thr.set(Calendar.MONTH,(thr.get(Calendar.MONTH)-n));
+            SimpleDateFormat df = new SimpleDateFormat(FORMAT_DATE);
+            List<ShoppingHistoryItem> list = ShoppingListManager.getInstance(mContext).getAllShoppingHistoryItems();
+
+            for(ShoppingHistoryItem sh : list){
+                Calendar c1 = Calendar.getInstance();
+                try {
+                    c1.setTime(df.parse(sh.getDate()));
+                    if(c1.after(thr) && !sh.getPrice().isEmpty()){
+                        total += Float.parseFloat(sh.getPrice());
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            return Float.toString(total);
+
+        }
+
+    }
+
+
 
 }
