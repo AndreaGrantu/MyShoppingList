@@ -6,7 +6,8 @@
         android:id="@+id/periods_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:textSize="18dp"/>
+        android:padding="16dp"
+        android:textSize="16dp"
+        android:text="January"/>
 
 </LinearLayout>
