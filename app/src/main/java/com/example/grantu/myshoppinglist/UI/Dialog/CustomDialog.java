@@ -64,6 +64,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
     private TextView dialogDatePrice;
     private TextView positiveButton;
     private TextView negativeButton;
+    private TextView periodResult;
     private ListView listView;
     private RadioGroup radioGroup;
     private TextView warningView;
@@ -213,6 +214,9 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 dialogTitle = (TextView)v.findViewById(R.id.dialog_title);
                 positiveButton = (TextView)v.findViewById(R.id.positive_btn);
                 listView = (ListView)v.findViewById(R.id.periods);
+                listView.setAdapter(new HistoryPeriodsMoneyAdapter(getActivity()));
+                periodResult = (TextView)v.findViewById(R.id.period_result);
+                positiveButton.setOnClickListener(this);
 
                 break;
 
@@ -534,7 +538,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
 
         private void calculateMoney(){
 
-            String result;
+            String result = "";
 
             if(period.equals(mContext.getString(R.string.dialog_money_jan))){
                 result = getMoneySpent(Calendar.JANUARY);
@@ -572,7 +576,7 @@ public class CustomDialog extends DialogFragment implements View.OnClickListener
                 result = getMoneySpentLastMonth(12);
             }
 
-            //set the textview
+            periodResult.setText(period+": "+result);
 
         }
 

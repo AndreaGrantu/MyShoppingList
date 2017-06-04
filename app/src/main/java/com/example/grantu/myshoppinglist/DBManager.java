@@ -265,7 +265,7 @@ public class DBManager {
 
     }
 
-    public boolean deleteHistoryList(int id){
+    public boolean deleteHistoryListItem(int id){
         SQLiteDatabase db = getDatabase();
         try {
             if (db == null) {

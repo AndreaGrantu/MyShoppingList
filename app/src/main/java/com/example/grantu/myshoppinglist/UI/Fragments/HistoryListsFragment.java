@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grantu.myshoppinglist.Classes.ShoppingHistoryItem;
-import com.example.grantu.myshoppinglist.DBManager;
+import com.example.grantu.myshoppinglist.Classes.ShoppingListManager;
 import com.example.grantu.myshoppinglist.R;
 import com.example.grantu.myshoppinglist.UI.Dialog.CustomDialog;
 
@@ -58,9 +58,8 @@ public class HistoryListsFragment extends Fragment{
 
     private Activity mActivity;
     private ListView mHistoryList;
-    private List<ShoppingHistoryItem> mHistoryItems;
-    DBManager mDb;
     private HistoryReceiver localReceiver = new HistoryReceiver();
+    private ShoppingListManager mSLManager;
 
     public HistoryListsFragment() {
     }
@@ -88,8 +87,7 @@ public class HistoryListsFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_history_lists, container, false);
-        mDb = DBManager.getInstance(mActivity);
-
+        mSLManager = ShoppingListManager.getInstance(mActivity);
         getViewReferences(v);
 
         loadData();
@@ -98,11 +96,7 @@ public class HistoryListsFragment extends Fragment{
     }
 
     private void loadData() {
-        mHistoryItems = mDb.getAllShoppingHistory();
-        if(mHistoryItems != null) {
-            mHistoryList.setAdapter(new HistoryListAdapter(mActivity, mHistoryItems));
-        }
-
+        mHistoryList.setAdapter(new HistoryListAdapter(mActivity, mSLManager.getAllShoppingHistoryItems()));
     }
 
     private void getViewReferences(View v) {
@@ -134,10 +128,15 @@ public class HistoryListsFragment extends Fragment{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_delete_history_list:
-                if(!mHistoryItems.isEmpty()) {
+                if(!mSLManager.getAllShoppingHistoryItems().isEmpty()) {
                     showDialog(CustomDialog.DELETE_HISTORY_LIST);
                 } else {
                     Toast.makeText(mActivity,R.string.delete_shopping_history_dialog_empty,Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.action_money_history_list:
+                if(!mSLManager.getAllShoppingHistoryItems().isEmpty()) {
+                    showDialog(CustomDialog.MONEY_SPENT);
                 }
                 break;
         }
@@ -176,9 +175,7 @@ public class HistoryListsFragment extends Fragment{
     }
 
     public void deleteList() {
-        for(ShoppingHistoryItem s : mHistoryItems){
-            mDb.deleteHistoryList(s.getId());
-        }
+        mSLManager.deleteHistoryList();
         loadData();
     }
 
@@ -275,12 +272,11 @@ public class HistoryListsFragment extends Fragment{
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-
                 case R.id.history_item_layout:
                     showDialog(CustomDialog.HISTORY_LIST_ITEM,item.getId());
                     break;
                 case R.id.history_item_delete:
-                    DBManager.getInstance(mActivity).deleteHistoryList(item.getId());
+                   mSLManager.deleteHistoryListItem(item.getId());
                     loadData();
                     break;
 

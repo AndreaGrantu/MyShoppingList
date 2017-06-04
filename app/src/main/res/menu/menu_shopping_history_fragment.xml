@@ -8,5 +8,9 @@
         android:title="delete"
         android:icon="@drawable/ic_delete_white_24dp" />
 
-
+    <item
+        android:id="@+id/action_money_history_list"
+        app:showAsAction="ifRoom"
+        android:title="delete"
+        android:icon="@drawable/ic_star_grey" />
 </menu>

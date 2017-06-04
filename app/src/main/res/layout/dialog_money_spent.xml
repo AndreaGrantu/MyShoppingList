@@ -30,7 +30,7 @@
         android:paddingTop="10dp"
         android:divider="@color/material_blue_grey_800"
         android:paddingBottom="10dp"
-        android:layout_height="350dp"/>
+        android:layout_height="250dp"/>
     <TextView
         android:id="@+id/period_result"
         android:layout_width="match_parent"

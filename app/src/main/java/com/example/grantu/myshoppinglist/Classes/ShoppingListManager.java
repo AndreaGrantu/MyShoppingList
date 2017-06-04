@@ -129,9 +129,23 @@ public class ShoppingListManager {
     }
 
     public List<ShoppingHistoryItem> getAllShoppingHistoryItems(){
-        return mDb.getAllShoppingHistory();
+        ArrayList<ShoppingHistoryItem> list = (ArrayList<ShoppingHistoryItem>) mDb.getAllShoppingHistory();
+        if (list == null) {
+            list = new ArrayList<ShoppingHistoryItem>();
+        }
+
+        return list;
     }
 
+    public void deleteHistoryList(){
+        for(ShoppingHistoryItem s : mDb.getAllShoppingHistory()){
+            mDb.deleteHistoryListItem(s.getId());
+        }
+    }
+    public void deleteHistoryListItem(int id){
+            mDb.deleteHistoryListItem(id);
+
+    }
 
 }
 
